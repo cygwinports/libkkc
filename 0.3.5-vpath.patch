@@ -1,0 +1,21 @@
+--- origsrc/libkkc-0.3.5/data/rules/rule.mk	2014-12-18 23:01:58.000000000 -0600
++++ src/libkkc-0.3.5/data/rules/rule.mk	2015-07-29 00:36:11.306592000 -0500
+@@ -4,6 +4,5 @@ edit = sed -e 's!\(^ *"[^"]*": *\)_(\("[
+ .json.in.json:
+ 	$(AM_V_GEN) rm -f $@ $@.tmp; \
+ 	srcdir=''; \
+-	  test -f ./$< || srcdir=$(srcdir)/; \
+-	  $(edit) $${srcdir}$< >$@.tmp; \
++	  $(edit) $< >$@.tmp; \
+ 	mv $@.tmp $@
+--- origsrc/libkkc-0.3.5/libkkc/Makefile.am	2014-12-18 23:01:58.000000000 -0600
++++ src/libkkc-0.3.5/libkkc/Makefile.am	2015-07-28 22:48:02.713940000 -0500
+@@ -26,7 +26,7 @@ libkkc_la_VALAFLAGS =						\
+ 	--vapi kkc-@KKC_API_VERSION@.vapi			\
+ 	-h libkkc-internals.h					\
+ 	--vapidir=.						\
+-	--vapidir=$(top_srcdir)/marisa-glib			\
++	--vapidir=$(abs_top_builddir)/marisa-glib		\
+ 	--pkg config						\
+ 	--pkg keysyms						\
+ 	--pkg glib-2.0						\

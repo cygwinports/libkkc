@@ -1,0 +1,28 @@
+--- origsrc/libkkc-0.3.5/configure.ac	2014-12-18 23:01:58.000000000 -0600
++++ src/libkkc-0.3.5/configure.ac	2015-07-28 22:44:41.969660500 -0500
+@@ -87,7 +87,7 @@ PKG_CHECK_MODULES([MARISA], [marisa], ,
+   [AC_MSG_ERROR([can't find marisa])])
+ 
+ # libstdc++ needs to be linked with libmarisa-glib.a
+-MARISA_GLIB_STATIC_DEPENDENCIES="$postdeps_CXX"
++MARISA_GLIB_STATIC_DEPENDENCIES="-lstdc++ -lgcc_s"
+ AC_SUBST(MARISA_GLIB_STATIC_DEPENDENCIES)
+ 
+ LIBKKC_CFLAGS="$GIO_CFLAGS $GEE_CFLAGS $JSON_GLIB_CFLAGS"
+--- origsrc/libkkc-0.3.5/libkkc/Makefile.am	2014-12-18 23:01:58.000000000 -0600
++++ src/libkkc-0.3.5/libkkc/Makefile.am	2015-07-28 22:48:02.713940000 -0500
+@@ -49,12 +49,13 @@ libkkc_la_CFLAGS =				\
+ 	-DLOCALEDIR=\"$(datadir)/locale\"	\
+ 	-I $(top_srcdir)			\
+ 	$(NULL)
+-libkkc_la_LIBADD = $(LIBKKC_LIBS) $(top_builddir)/marisa-glib/libmarisa-glib.la
++libkkc_la_LIBADD = $(LIBKKC_LIBS) $(top_builddir)/marisa-glib/libmarisa-glib.la $(MARISA_GLIB_STATIC_DEPENDENCIES)
+ libkkc_la_LDFLAGS =							\
+ 	$(CODE_COVERAGE_LDFLAGS)					\
+ 	-version-info "$(LT_CURRENT)":"$(LT_REVISION)":"$(LT_AGE)"	\
+ 	-export-dynamic							\
+ 	-export-symbols $(srcdir)/libkkc.symbols			\
++	-no-undefined							\
+ 	$(NULL)
+ 
+ libkkc_internals_la_DEPENDENCIES =		\

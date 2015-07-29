@@ -1,0 +1,32 @@
+NAME="libkkc"
+VERSION=0.3.5
+RELEASE=1
+CATEGORY="Libs"
+SUMMARY="Japanese Kana Kanji conversion library"
+DESCRIPTION="libkkc provides a converter from Kana-string to
+Kana-Kanji-mixed-string. It was named after kkc.el in GNU Emacs, a
+simple Kana Kanji converter, while libkkc tries to convert sentences
+in a bit more complex way using N-gram language models."
+HOMEPAGE="https://github.com/ueno/libkkc"
+SRC_URI="https://github.com/ueno/libkkc/archive/v${VERSION}/libkkc-v${VERSION}.tar.gz"
+PATCH_URI="
+	http://pkgs.fedoraproject.org/cgit/libkkc.git/plain/libkkc-try-all.patch
+	0.3.5-introspection.patch
+	0.3.5-no-undefined.patch
+	0.3.5-vpath.patch
+"
+
+PKG_NAMES="libkkc2 libkkc-common libkkc-devel libkkc-tools girepository-Kkc1.0 vala-kkc1.0"
+libkkc2_REQUIRES="libkkc-common libkkc-data"
+libkkc2_CONTENTS="usr/bin/cygkkc-2.dll"
+libkkc_common_CONTENTS="usr/share/doc/ usr/share/libkkc/ usr/share/locale/"
+libkkc_devel_CONTENTS="usr/include/libkkc/ usr/lib/libkkc.dll.a usr/lib/pkgconfig/kkc-1.0.pc"
+libkkc_tools_CATEGORY="Text"
+libkkc_tools_REQUIRES="skkdic"
+libkkc_tools_CONTENTS="usr/bin/kkc*"
+girepository_Kkc1_0_REQUIRES="libkkc2"
+girepository_Kkc1_0_CONTENTS="usr/*/gir*-1.0/Kkc-1.0.*"
+vala_kkc1_0_CONTENTS="usr/share/vala/vapi/kkc-1.0.*"
+
+# vala sources built in srcdir
+RESTRICT="diff"

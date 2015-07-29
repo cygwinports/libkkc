@@ -1,0 +1,17 @@
+--- origsrc/libkkc-0.3.5/libkkc/Makefile.am	2015-07-29 00:02:02.620305600 -0500
++++ src/libkkc-0.3.5/libkkc/Makefile.am	2015-07-29 02:52:13.811441000 -0500
+@@ -138,8 +138,12 @@ gir_DATA = Kkc-@KKC_API_VERSION@.gir
+ typelibdir = $(libdir)/girepository-1.0
+ typelib_DATA = Kkc-@KKC_API_VERSION@.typelib
+ 
+-Kkc-@KKC_API_VERSION@.typelib: Kkc-@KKC_API_VERSION@.gir
+-	@INTROSPECTION_COMPILER@ --shared-library=libkkc -o $@ $^
++# We have to extract our own dlname; this is what g-ir-scanner does.
++libkkc_dlname = \
++	`$(SED) -n "s/^dlname='\([A-Za-z0-9.+-]\+\)'/\1/p" libkkc.la`
++
++Kkc-@KKC_API_VERSION@.typelib: Kkc-@KKC_API_VERSION@.gir libkkc.la
++	@INTROSPECTION_COMPILER@ --shared-library=$(libkkc_dlname) -o $@ $^
+ endif
+ 
+ Kkc-@KKC_API_VERSION@.gir kkc-internals-@KKC_API_VERSION@.vapi kkc-@KKC_API_VERSION@.vapi: libkkc.la
